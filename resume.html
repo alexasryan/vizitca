@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Асрян Алексей Аркадьевич — Помощник юриста</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-dark: #0d1b2a;
+    --bg-medium: #1b263b;
+    --bg-light: #f8f6f1;
+    --accent: #c9a961;
+    --accent-dark: #a8894a;
+    --text-dark: #1b263b;
+    --text-light: #e8e6e1;
+    --text-muted: #8b8678;
+    --border: rgba(201, 169, 97, 0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  html, body {
+    min-height: 100%;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ===== ANIMATED BACKGROUND ORBS (decorative, no cursor) ===== */
+  .bg-orbs {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    animation: float 18s ease-in-out infinite;
+  }
+  .orb.o1 { width: 480px; height: 480px; background: var(--accent); top: -120px; left: -100px; animation-delay: 0s; }
+  .orb.o2 { width: 420px; height: 420px; background: #3a5a8c; bottom: -140px; right: -120px; animation-delay: -6s; }
+  .orb.o3 { width: 360px; height: 360px; background: var(--accent-dark); top: 40%; right: 20%; animation-delay: -12s; opacity: 0.10; }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(60px, -50px) scale(1.1); }
+    66% { transform: translate(-50px, 40px) scale(0.95); }
+  }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    background: rgba(13, 27, 42, 0.97);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+    transition: padding 0.3s ease, box-shadow 0.3s ease;
+  }
+  nav.scrolled { box-shadow: 0 6px 30px rgba(0,0,0,0.35); }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 30px;
+  }
+
+  .logo {
+    font-family: 'Georgia', serif;
+    font-size: 20px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    font-weight: bold;
+  }
+  .logo span { color: var(--text-light); font-weight: normal; }
+
+  .nav-links { display: flex; list-style: none; gap: 5px; }
+
+  .nav-links button {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .nav-links button::after {
+    content: '';
+    position: absolute;
+    bottom: 4px; left: 50%;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  .nav-links button:hover { color: var(--accent); }
+  .nav-links button:hover::after { width: 60%; }
+  .nav-links button.active { color: var(--accent); }
+  .nav-links button.active::after { width: 60%; }
+
+  .burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  .burger span {
+    width: 25px; height: 2px;
+    background: var(--text-light);
+    transition: 0.3s;
+  }
+
+  /* ===== PAGES ===== */
+  .page {
+    display: none;
+    min-height: 100vh;
+    padding-top: 80px;
+    position: relative;
+    z-index: 1;
+  }
+  .page.active { display: block; animation: fadeIn 0.6s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 30px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== HOME PAGE ===== */
+  .home {
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
+    color: var(--text-light);
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .home::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(201,169,97,0.12), transparent 40%),
+      radial-gradient(circle at 10% 90%, rgba(201,169,97,0.08), transparent 35%);
+    pointer-events: none;
+  }
+
+  .home-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 30px;
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .home-text .greeting {
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .home-text h1 {
+    font-size: 52px;
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 15px;
+    font-family: 'Georgia', serif;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+  .home-text .position {
+    font-size: 22px;
+    color: var(--accent);
+    margin-bottom: 30px;
+    font-style: italic;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+  .home-text .description {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    max-width: 550px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+  .home-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .photo-frame {
+    width: 320px;
+    height: 400px;
+    background: linear-gradient(135deg, var(--bg-medium), #2a3a52);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    animation: fadeUp 0.9s ease 0.3s both, floatSoft 6s ease-in-out 1s infinite;
+  }
+  @keyframes floatSoft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .photo-frame::before {
+    content: '';
+    position: absolute;
+    top: -15px; left: -15px;
+    right: 15px; bottom: 15px;
+    border: 1px solid var(--accent);
+    z-index: -1;
+  }
+  .photo-frame .placeholder {
+    color: var(--text-muted);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .photo-frame .placeholder .icon {
+    font-size: 80px;
+    display: block;
+    margin-bottom: 15px;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    padding: 14px 32px;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: left 0.6s ease;
+  }
+  .btn:hover::before { left: 100%; }
+  .btn-primary { background: var(--accent); color: var(--bg-dark); }
+  .btn-primary:hover {
+    background: var(--accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(201, 169, 97, 0.3);
+  }
+  .btn-outline { background: transparent; color: var(--accent); }
+  .btn-outline:hover { background: var(--accent); color: var(--bg-dark); }
+
+  /* ===== SECTION TITLES ===== */
+  .section-title {
+    font-size: 38px;
+    font-weight: normal;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+    font-family: 'Georgia', serif;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 50px;
+  }
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    margin: 20px 0 40px;
+    position: relative;
+  }
+  .divider::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%; width: 100%;
+    background: var(--accent);
+    transform-origin: left;
+    animation: drawLine 1.2s ease;
+  }
+  @keyframes drawLine {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /* ===== ABOUT PAGE ===== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 60px;
+  }
+  .about-text p {
+    font-size: 17px;
+    margin-bottom: 20px;
+    color: #3d4a5c;
+  }
+  .about-text p:first-child::first-letter {
+    font-size: 52px;
+    float: left;
+    line-height: 1;
+    padding-right: 10px;
+    color: var(--accent-dark);
+    font-family: 'Georgia', serif;
+  }
+  .info-card {
+    background: #fff;
+    padding: 35px;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  }
+  .info-card h3 {
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 25px;
+  }
+  .info-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  .info-item:last-child { border-bottom: none; }
+  .info-item .label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .info-item .value { font-size: 15px; color: var(--text-dark); }
+
+  /* ===== EXPERIENCE PAGE ===== */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(var(--accent), transparent);
+  }
+  .job {
+    position: relative;
+    margin-bottom: 50px;
+    background: #fff;
+    padding: 35px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.06);
+    border-top: 3px solid var(--accent);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .job:hover {
+    transform: translateY(-5px) scale(1.005);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+  }
+  .job::before {
+    content: '';
+    position: absolute;
+    left: -35px; top: 40px;
+    width: 14px; height: 14px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 3px solid var(--bg-light);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .job h3 {
+    font-size: 22px;
+    color: var(--text-dark);
+    font-weight: normal;
+    margin-bottom: 5px;
+  }
+  .job .role-sub { color: var(--text-muted); font-style: italic; font-size: 14px; }
+  .job .period {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+    font-style: italic;
+  }
+  .job h4 {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 20px 0 10px;
+  }
+  .job ul { list-style: none; padding-left: 0; }
+  .job ul li {
+    padding: 8px 0 8px 25px;
+    position: relative;
+    font-size: 15px;
+    color: #3d4a5c;
+  }
+  .job ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  /* ===== EDUCATION PAGE ===== */
+  .edu-card {
+    background: #fff;
+    padding: 45px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.06);
+    margin-bottom: 30px;
+    border-left: 4px solid var(--accent);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .edu-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
+  }
+  .edu-card h3 {
+    font-size: 24px;
+    font-weight: normal;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+  }
+  .edu-card .degree {
+    font-size: 16px;
+    color: var(--accent-dark);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .edu-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+  }
+  .stat { text-align: center; }
+  .stat .number {
+    font-size: 32px;
+    color: var(--accent-dark);
+    font-family: 'Georgia', serif;
+    display: block;
+  }
+  .stat .label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .achievements { margin-top: 50px; }
+  .achievement-item {
+    background: #fff;
+    padding: 25px 30px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--accent);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.04);
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+  .achievement-item:hover {
+    transform: translateX(8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  }
+  .achievement-item .icon { font-size: 28px; color: var(--accent-dark); flex-shrink: 0; }
+  .achievement-item p { font-size: 15px; color: #3d4a5c; }
+
+  /* ===== SKILLS PAGE ===== */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+  }
+  .skill-block {
+    background: #fff;
+    padding: 35px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border-top: 3px solid var(--accent);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .skill-block:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.1);
+  }
+  .skill-block h3 {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+  .skill-item { margin-bottom: 20px; }
+  .skill-item .name {
+    font-size: 15px;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .skill-bar {
+    height: 6px;
+    background: #eee;
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+  }
+  .skill-bar::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+    width: 0;
+    transition: width 1.4s cubic-bezier(.2,.8,.2,1);
+    border-radius: 3px;
+  }
+  .skill-bar.animated::after { width: var(--level, 80%); }
+
+  .qualities-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+  .quality {
+    padding: 20px;
+    background: #fff;
+    text-align: center;
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+  }
+  .quality:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+  }
+  .quality .icon { font-size: 28px; color: var(--accent-dark); margin-bottom: 10px; display: block; }
+  .quality .name {
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dark);
+  }
+
+  /* ===== CONTACTS PAGE ===== */
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+  }
+  .contact-info {
+    background: var(--bg-dark);
+    color: var(--text-light);
+    padding: 50px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+  }
+  .contact-info::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 150px; height: 150px;
+    background: var(--accent);
+    opacity: 0.05;
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+  }
+  .contact-info h3 {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 30px;
+  }
+  .contact-item {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    align-items: flex-start;
+  }
+  .contact-item .icon {
+    font-size: 22px;
+    color: var(--accent);
+    flex-shrink: 0;
+    width: 45px; height: 45px;
+    border: 1px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+  .contact-item:hover .icon {
+    transform: rotate(8deg) scale(1.1);
+    background: rgba(201,169,97,0.15);
+  }
+  .contact-item .label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .contact-item .value { font-size: 16px; color: var(--text-light); }
+  .contact-item a { color: var(--text-light); text-decoration: none; transition: color 0.3s; }
+  .contact-item a:hover { color: var(--accent); }
+
+  .contact-form {
+    background: #fff;
+    padding: 50px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.06);
+  }
+  .contact-form h3 {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 30px;
+  }
+  .form-group { margin-bottom: 20px; }
+  .form-group label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    transition: all 0.3s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(201,169,97,0.12);
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  /* ===== SCROLL REVEAL ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.2,.8,.2,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--bg-dark);
+    color: var(--text-muted);
+    text-align: center;
+    padding: 30px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 2;
+  }
+  footer .accent { color: var(--accent); }
+
+  /* ===== FLOATING PDF BUTTON ===== */
+  .pdf-fab {
+    position: fixed;
+    right: 25px; bottom: 25px;
+    z-index: 900;
+    background: var(--accent);
+    color: var(--bg-dark);
+    border: none;
+    padding: 14px 22px;
+    font-family: 'Georgia', serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 40px;
+    box-shadow: 0 8px 25px rgba(201,169,97,0.45);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    animation: floatSoft 5s ease-in-out infinite;
+  }
+  .pdf-fab:hover {
+    transform: translateY(-3px) scale(1.05);
+    background: var(--accent-dark);
+    box-shadow: 0 12px 35px rgba(201,169,97,0.6);
+  }
+  .pdf-fab .pdf-ico { font-size: 18px; }
+
+  /* ===== ADMIN GEAR ===== */
+  .admin-gear {
+    position: fixed;
+    left: 25px; bottom: 25px;
+    z-index: 900;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: rgba(13,27,42,0.85);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s ease, background 0.3s ease;
+    backdrop-filter: blur(6px);
+  }
+  .admin-gear:hover { transform: rotate(90deg); background: var(--bg-dark); }
+
+  /* ===== ADMIN PANEL ===== */
+  .admin-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13,27,42,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+  .admin-overlay.open { display: flex; }
+
+  .admin-box {
+    background: var(--bg-light);
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 40px;
+    border-top: 4px solid var(--accent);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    position: relative;
+    animation: popIn 0.4s cubic-bezier(.2,.9,.3,1.2);
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .admin-box h2 {
+    font-size: 22px;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+    font-weight: normal;
+  }
+  .admin-box .admin-sub {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin-bottom: 25px;
+  }
+  .admin-close {
+    position: absolute;
+    top: 15px; right: 18px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    color: var(--text-muted);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .admin-close:hover { color: var(--accent-dark); transform: rotate(90deg); }
+
+  .admin-field { margin-bottom: 16px; }
+  .admin-field label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .admin-field input,
+  .admin-field textarea {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .admin-field input:focus,
+  .admin-field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(201,169,97,0.12);
+  }
+  .admin-field textarea { resize: vertical; min-height: 70px; }
+  .admin-section-title {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    margin: 22px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2dccf;
+  }
+  .admin-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .admin-actions .btn { font-size: 12px; padding: 12px 20px; }
+  .admin-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    font-style: italic;
+  }
+  .admin-saved {
+    color: #2e7d32;
+    font-size: 13px;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .admin-saved.show { opacity: 1; }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 90px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    padding: 14px 28px;
+    border-left: 3px solid var(--accent);
+    font-size: 14px;
+    letter-spacing: 1px;
+    z-index: 3000;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    pointer-events: none;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ===== PRINT / PDF RESUME ===== */
+  #print-resume { display: none; }
+
+  @media print {
+    body { background: #fff; }
+    nav, footer, .pdf-fab, .admin-gear, .bg-orbs, .page, .toast, .admin-overlay { display: none !important; }
+    #print-resume {
+      display: block !important;
+      color: #111;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      padding: 0;
+      max-width: 100%;
+    }
+    .pr-header {
+      border-bottom: 2px solid #c9a961;
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+    }
+    .pr-name { font-size: 26px; margin-bottom: 4px; }
+    .pr-position { font-size: 15px; color: #a8894a; font-style: italic; }
+    .pr-contacts { font-size: 12px; color: #333; margin-top: 8px; }
+    .pr-section { margin-bottom: 16px; }
+    .pr-section h2 {
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #a8894a;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+    .pr-job { margin-bottom: 12px; }
+    .pr-job-head { display: flex; justify-content: space-between; font-size: 13px; }
+    .pr-job-head strong { font-size: 14px; }
+    .pr-job .pr-role { font-style: italic; color: #555; font-size: 12px; }
+    .pr-job ul { margin: 6px 0 0 16px; font-size: 12px; }
+    .pr-job ul li { margin-bottom: 2px; }
+    .pr-grid { display: flex; gap: 24px; }
+    .pr-grid > div { flex: 1; }
+    .pr-skills { font-size: 12px; color: #222; }
+    .pr-edu { font-size: 13px; }
+    @page { margin: 1.4cm; }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .home-content { grid-template-columns: 1fr; text-align: center; }
+    .photo-frame { margin: 0 auto; }
+    .home-text h1 { font-size: 36px; }
+    .home-buttons { justify-content: center; }
+    .about-grid { grid-template-columns: 1fr; }
+    .contacts-grid { grid-template-columns: 1fr; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%; left: 0;
+      width: 100%;
+      background: var(--bg-dark);
+      flex-direction: column;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .nav-links.open { display: flex; }
+    .burger { display: flex; }
+    .section-title { font-size: 28px; }
+    .job-header { flex-direction: column; }
+    .admin-box { padding: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- DECORATIVE BACKGROUND -->
+<div class="bg-orbs" aria-hidden="true">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="mainNav">
+  <div class="nav-container">
+    <div class="logo">А.А. <span>АСРЯН</span></div>
+    <button class="burger" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><button class="nav-btn active" data-page="home">Главная</button></li>
+      <li><button class="nav-btn" data-page="about">Обо мне</button></li>
+      <li><button class="nav-btn" data-page="experience">Опыт</button></li>
+      <li><button class="nav-btn" data-page="education">Образование</button></li>
+      <li><button class="nav-btn" data-page="skills">Навыки</button></li>
+      <li><button class="nav-btn" data-page="contacts">Контакты</button></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<section class="page active" id="home">
+  <div class="home">
+    <div class="home-content">
+      <div class="home-text">
+        <div class="greeting" data-field="home.greeting">Добро пожаловать</div>
+        <h1 data-field="home.name">Асрян<br>Алексей Аркадьевич</h1>
+        <div class="position" data-field="home.position">Помощник юриста</div>
+        <p class="description" data-field="home.description">
+          Юрист с опытом судебной практики и знаниями корпоративного и уголовного права.
+          Обладаю аналитическим и критическим мышлением, умею работать в команде и разрабатывать
+          стратегические решения для защиты интересов клиентов.
+        </p>
+        <div class="home-buttons">
+          <button class="btn btn-primary" onclick="showPage('contacts')">Связаться</button>
+          <button class="btn btn-outline" onclick="showPage('experience')">Мой опыт</button>
+        </div>
+      </div>
+      <div class="photo-frame">
+        <div class="placeholder">
+          <span class="icon">⚖</span>
+          Место для<br>фотографии
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT PAGE -->
+<section class="page" id="about">
+  <div class="container">
+    <div class="section-subtitle">Краткая информация</div>
+    <h2 class="section-title">Обо мне</h2>
+    <div class="divider"></div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p data-field="about.p1">Юрист с практическим опытом работы в прокуратуре, корпоративном секторе и юридической фирме.
+        Специализируюсь на подготовке процессуальных документов, разработке правовых позиций и
+        сопровождении судебных дел в арбитражных судах и судах общей юрисдикции.</p>
+
+        <p data-field="about.p2">За время работы в Замоскворецкой межрайонной прокуратуре приобрёл глубокие навыки
+        прокурорского надзора, анализа материалов проверок и подготовки актов прокурорского реагирования.
+        В ООО «РСК» занимался правовой экспертизой договоров и снижением правовых рисков.</p>
+
+        <p data-field="about.p3">В настоящее время в ООО «Правое дело» самостоятельно веду судебные дела, включая
+        успешную защиту предпринимателя в сфере интеллектуальных прав с существенным снижением
+        размера заявленной компенсации. Автор научных публикаций в изданиях РИНЦ по вопросам
+        цифровизации права и применения искусственного интеллекта в юридической сфере.</p>
+
+        <p data-field="about.p4">Стремлюсь к профессиональному развитию, готов разгрузить текущих юристов и привнести
+        новые идеи в работу компании. Обладаю высокой ответственностью, пунктуальностью и
+        трудолюбием.</p>
+      </div>
+
+      <div class="info-card reveal">
+        <h3>Личные данные</h3>
+        <div class="info-item">
+          <div class="label">ФИО</div>
+          <div class="value" data-field="info.fio">Асрян Алексей Аркадьевич</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Должность</div>
+          <div class="value" data-field="info.position">Помощник юриста</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Телефон</div>
+          <div class="value" data-field="info.phone">+7 (961) 595-19-37</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Email</div>
+          <div class="value" data-field="info.email">asryanalex555@gmail.com</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Желаемая з/п</div>
+          <div class="value" data-field="info.salary">от 80 000 ₽</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Английский язык</div>
+          <div class="value" data-field="info.english">B1 — Средний уровень</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE PAGE -->
+<section class="page" id="experience">
+  <div class="container">
+    <div class="section-subtitle">Профессиональный путь</div>
+    <h2 class="section-title">Опыт работы</h2>
+    <div class="divider"></div>
+
+    <div class="timeline" id="jobsContainer">
+      <!-- Jobs rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION PAGE -->
+<section class="page" id="education">
+  <div class="container">
+    <div class="section-subtitle">Академическая подготовка</div>
+    <h2 class="section-title">Образование</h2>
+    <div class="divider"></div>
+
+    <div class="edu-card reveal">
+      <h3>Московский государственный юридический университет имени О.Е. Кутафина (МГЮА)</h3>
+      <div class="degree">Специалитет — Юриспруденция</div>
+      <p style="color: #3d4a5c;">
+        Ведущий юридический вуз России. Получил фундаментальную подготовку в области
+        гражданского, уголовного, корпоративного и процессуального права. Особое внимание
+        уделял вопросам цифровизации права и применения технологий в юридической практике.
+      </p>
+      <div class="edu-stats">
+        <div class="stat">
+          <span class="number" data-count="4">0</span>
+          <span class="label">Курс обучения</span>
+        </div>
+        <div class="stat">
+          <span class="number" data-count="4.5" data-decimal="1">0</span>
+          <span class="label">Средний балл</span>
+        </div>
+        <div class="stat">
+          <span class="number">2022—2027</span>
+          <span class="label">Годы обучения</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="achievements">
+      <div class="section-subtitle" style="margin-top: 50px;">Научная деятельность</div>
+      <h2 class="section-title" style="font-size: 28px;">Достижения</h2>
+      <div class="divider"></div>
+
+      <div class="achievement-item reveal">
+        <div class="icon">📚</div>
+        <p><strong>Автор научных публикаций в изданиях РИНЦ</strong> — по актуальным вопросам цифровизации права, правовой статистики и уголовного процесса.</p>
+      </div>
+      <div class="achievement-item reveal">
+        <div class="icon">🎓</div>
+        <p><strong>Участник Студенческого юридического форума (СЮФ)</strong> — представление научных докладов по тематике применения искусственного интеллекта в праве.</p>
+      </div>
+      <div class="achievement-item reveal">
+        <div class="icon">⚖</div>
+        <p><strong>Успешная защита в арбитражном споре</strong> — снижение размера компенсации по делу о защите интеллектуальных прав предпринимателя.</p>
+      </div>
+      <div class="achievement-item reveal">
+        <div class="icon">📝</div>
+        <p><strong>Разработка правовых позиций</strong> — практический опыт сопровождения судебных дел, включая дела об утрате права пользования жилым помещением.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS PAGE -->
+<section class="page" id="skills">
+  <div class="container">
+    <div class="section-subtitle">Профессиональные компетенции</div>
+    <h2 class="section-title">Навыки и качества</h2>
+    <div class="divider"></div>
+
+    <div class="skills-grid">
+
+      <div class="skill-block reveal">
+        <h3>Профессиональные навыки</h3>
+        <div class="skill-item"><div class="name"><span>Составление процессуальных документов</span></div><div class="skill-bar" style="--level: 95%"></div></div>
+        <div class="skill-item"><div class="name"><span>Разработка правовых позиций</span></div><div class="skill-bar" style="--level: 90%"></div></div>
+        <div class="skill-item"><div class="name"><span>Сопровождение судебных дел</span></div><div class="skill-bar" style="--level: 85%"></div></div>
+        <div class="skill-item"><div class="name"><span>Правовая экспертиза договоров</span></div><div class="skill-bar" style="--level: 90%"></div></div>
+        <div class="skill-item"><div class="name"><span>Прокурорский надзор</span></div><div class="skill-bar" style="--level: 80%"></div></div>
+      </div>
+
+      <div class="skill-block reveal">
+        <h3>Инструменты и системы</h3>
+        <div class="skill-item"><div class="name"><span>СПС «КонсультантПлюс»</span></div><div class="skill-bar" style="--level: 95%"></div></div>
+        <div class="skill-item"><div class="name"><span>СПС «Гарант»</span></div><div class="skill-bar" style="--level: 90%"></div></div>
+        <div class="skill-item"><div class="name"><span>Microsoft Word</span></div><div class="skill-bar" style="--level: 90%"></div></div>
+        <div class="skill-item"><div class="name"><span>Microsoft Excel</span></div><div class="skill-bar" style="--level: 80%"></div></div>
+        <div class="skill-item"><div class="name"><span>Microsoft PowerPoint</span></div><div class="skill-bar" style="--level: 80%"></div></div>
+      </div>
+
+      <div class="skill-block reveal">
+        <h3>Отрасли права</h3>
+        <div class="skill-item"><div class="name"><span>Гражданское право</span></div><div class="skill-bar" style="--level: 90%"></div></div>
+        <div class="skill-item"><div class="name"><span>Арбитражный процесс</span></div><div class="skill-bar" style="--level: 85%"></div></div>
+        <div class="skill-item"><div class="name"><span>Уголовное право</span></div><div class="skill-bar" style="--level: 80%"></div></div>
+        <div class="skill-item"><div class="name"><span>Корпоративное право</span></div><div class="skill-bar" style="--level: 80%"></div></div>
+        <div class="skill-item"><div class="name"><span>Интеллектуальные права</span></div><div class="skill-bar" style="--level: 75%"></div></div>
+      </div>
+
+      <div class="skill-block reveal">
+        <h3>Иностранные языки</h3>
+        <div class="skill-item"><div class="name"><span>Английский — B1 (Intermediate)</span></div><div class="skill-bar" style="--level: 60%"></div></div>
+        <div class="skill-item"><div class="name"><span>Русский — родной</span></div><div class="skill-bar" style="--level: 100%"></div></div>
+        <p style="margin-top: 25px; font-size: 14px; color: var(--text-muted); font-style: italic;">
+          Чтение профессиональной юридической литературы на английском языке.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="section-subtitle" style="margin-top: 50px;">Личные качества</div>
+    <h2 class="section-title" style="font-size: 28px;">Характер</h2>
+    <div class="divider"></div>
+
+    <div class="qualities-list">
+      <div class="quality reveal"><span class="icon">⏱</span><span class="name">Пунктуальность</span></div>
+      <div class="quality reveal"><span class="icon">⚡</span><span class="name">Энергичность</span></div>
+      <div class="quality reveal"><span class="icon">✓</span><span class="name">Ответственность</span></div>
+      <div class="quality reveal"><span class="icon">✦</span><span class="name">Трудолюбие</span></div>
+      <div class="quality reveal"><span class="icon">🧠</span><span class="name">Аналитическое мышление</span></div>
+      <div class="quality reveal"><span class="icon">🤝</span><span class="name">Командная работа</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTS PAGE -->
+<section class="page" id="contacts">
+  <div class="container">
+    <div class="section-subtitle">Свяжитесь со мной</div>
+    <h2 class="section-title">Контакты</h2>
+    <div class="divider"></div>
+
+    <div class="contacts-grid">
+
+      <div class="contact-info reveal">
+        <h3>Контактная информация</h3>
+
+        <div class="contact-item">
+          <div class="icon">📞</div>
+          <div>
+            <div class="label">Телефон</div>
+            <div class="value"><a href="tel:+79615951937" data-field="info.phone-link">+7 (961) 595-19-37</a></div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="icon">✉</div>
+          <div>
+            <div class="label">Электронная почта</div>
+            <div class="value"><a href="mailto:asryanalex555@gmail.com" data-field="info.email-link">asryanalex555@gmail.com</a></div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="icon">⚖</div>
+          <div>
+            <div class="label">Должность</div>
+            <div class="value" data-field="info.position">Помощник юриста</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="icon">💼</div>
+          <div>
+            <div class="label">Желаемая зарплата</div>
+            <div class="value" data-field="info.salary">от 80 000 ₽</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="icon">🌐</div>
+          <div>
+            <div class="label">Языки</div>
+            <div class="value">Русский (родной), English (B1)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <h3>Написать сообщение</h3>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label>Ваше имя</label>
+            <input type="text" required placeholder="Иван Иванов">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" required placeholder="example@mail.com">
+          </div>
+          <div class="form-group">
+            <label>Тема</label>
+            <input type="text" placeholder="Предложение о сотрудничестве">
+          </div>
+          <div class="form-group">
+            <label>Сообщение</label>
+            <textarea required placeholder="Ваше сообщение..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; border: none;">Отправить</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 <span class="accent">Асрян Алексей Аркадьевич</span> — Помощник юриста
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<button class="pdf-fab" onclick="downloadPDF()" title="Скачать резюме в PDF">
+  <span class="pdf-ico">⬇</span> Скачать PDF
+</button>
+<button class="admin-gear" onclick="openAdmin()" title="Админ-панель (Ctrl+Shift+A)">⚙</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-box">
+    <button class="admin-close" onclick="closeAdmin()">×</button>
+    <div id="adminLoginView">
+      <h2>Админ-панель</h2>
+      <div class="admin-sub">Вход для редактирования</div>
+      <div class="admin-field">
+        <label>Пароль</label>
+        <input type="password" id="adminPass" placeholder="Введите пароль" onkeydown="if(event.key==='Enter')adminLogin()">
+      </div>
+      <div class="admin-actions">
+        <button class="btn btn-primary" onclick="adminLogin()">Войти</button>
+      </div>
+      <p class="admin-note">Пароль по умолчанию: <strong>admin123</strong> (можно сменить после входа)</p>
+    </div>
+
+    <div id="adminEditView" style="display:none;">
+      <h2>Редактирование</h2>
+      <div class="admin-sub">Все изменения сохраняются в браузере</div>
+
+      <div class="admin-section-title">Главная</div>
+      <div class="admin-field"><label>Приветствие</label><input data-admin="home.greeting" type="text"></div>
+      <div class="admin-field"><label>Имя (можно &lt;br&gt;)</label><input data-admin="home.name" type="text"></div>
+      <div class="admin-field"><label>Должность</label><input data-admin="home.position" type="text"></div>
+      <div class="admin-field"><label>Описание</label><textarea data-admin="home.description"></textarea></div>
+
+      <div class="admin-section-title">Обо мне</div>
+      <div class="admin-field"><label>Абзац 1</label><textarea data-admin="about.p1"></textarea></div>
+      <div class="admin-field"><label>Абзац 2</label><textarea data-admin="about.p2"></textarea></div>
+      <div class="admin-field"><label>Абзац 3</label><textarea data-admin="about.p3"></textarea></div>
+      <div class="admin-field"><label>Абзац 4</label><textarea data-admin="about.p4"></textarea></div>
+
+      <div class="admin-section-title">Личные данные</div>
+      <div class="admin-field"><label>ФИО</label><input data-admin="info.fio" type="text"></div>
+      <div class="admin-field"><label>Должность</label><input data-admin="info.position" type="text"></div>
+      <div class="admin-field"><label>Телефон</label><input data-admin="info.phone" type="text"></div>
+      <div class="admin-field"><label>Email</label><input data-admin="info.email" type="text"></div>
+      <div class="admin-field"><label>Желаемая з/п</label><input data-admin="info.salary" type="text"></div>
+      <div class="admin-field"><label>Английский</label><input data-admin="info.english" type="text"></div>
+
+      <div class="admin-section-title">Опыт работы</div>
+      <div id="adminJobs"></div>
+
+      <div class="admin-section-title">Безопасность</div>
+      <div class="admin-field"><label>Новый пароль</label><input id="newPass" type="text" placeholder="Оставьте пустым — без изменений"></div>
+
+      <div class="admin-actions">
+        <button class="btn btn-primary" onclick="adminSave()">Сохранить</button>
+        <button class="btn btn-outline" onclick="adminReset()">Сбросить к исходному</button>
+        <button class="btn btn-outline" onclick="adminLogout()">Выйти</button>
+      </div>
+      <div class="admin-saved" id="adminSaved">✓ Сохранено!</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT RESUME TEMPLATE -->
+<div id="print-resume">
+  <div class="pr-header">
+    <div class="pr-name" id="prName"></div>
+    <div class="pr-position" id="prPosition"></div>
+    <div class="pr-contacts" id="prContacts"></div>
+  </div>
+  <div class="pr-section">
+    <h2>Профиль</h2>
+    <p id="prSummary" style="font-size:12px;"></p>
+  </div>
+  <div class="pr-section">
+    <h2>Опыт работы</h2>
+    <div id="prJobs"></div>
+  </div>
+  <div class="pr-grid">
+    <div class="pr-section">
+      <h2>Образование</h2>
+      <div class="pr-edu" id="prEdu"></div>
+    </div>
+    <div class="pr-section">
+      <h2>Ключевые навыки</h2>
+      <div class="pr-skills" id="prSkills"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* =========================================================
+     ДАННЫЕ ПО УМОЛЧАНИЮ (редактируются через админ-панель)
+     ========================================================= */
+  const DEFAULT_DATA = {
+    home: {
+      greeting: "Добро пожаловать",
+      name: "Асрян<br>Алексей Аркадьевич",
+      position: "Помощник юриста",
+      description: "Юрист с опытом судебной практики и знаниями корпоративного и уголовного права. Обладаю аналитическим и критическим мышлением, умею работать в команде и разрабатывать стратегические решения для защиты интересов клиентов."
+    },
+    about: {
+      p1: "Юрист с практическим опытом работы в прокуратуре, корпоративном секторе и юридической фирме. Специализируюсь на подготовке процессуальных документов, разработке правовых позиций и сопровождении судебных дел в арбитражных судах и судах общей юрисдикции.",
+      p2: "За время работы в Замоскворецкой межрайонной прокуратуре приобрёл глубокие навыки прокурорского надзора, анализа материалов проверок и подготовки актов прокурорского реагирования. В ООО «РСК» занимался правовой экспертизой договоров и снижением правовых рисков.",
+      p3: "В настоящее время в ООО «Правое дело» самостоятельно веду судебные дела, включая успешную защиту предпринимателя в сфере интеллектуальных прав с существенным снижением размера заявленной компенсации. Автор научных публикаций в изданиях РИНЦ по вопросам цифровизации права и применения искусственного интеллекта в юридической сфере.",
+      p4: "Стремлюсь к профессиональному развитию, готов разгрузить текущих юристов и привнести новые идеи в работу компании. Обладаю высокой ответственностью, пунктуальностью и трудолюбием."
+    },
+    info: {
+      fio: "Асрян Алексей Аркадьевич",
+      position: "Помощник юриста",
+      phone: "+7 (961) 595-19-37",
+      email: "asryanalex555@gmail.com",
+      salary: "от 80 000 ₽",
+      english: "B1 — Средний уровень"
+    },
+    jobs: [
+      {
+        company: "ООО «Правое дело»",
+        role: "Юрист / Помощник юриста",
+        period: "Август 2025 — настоящее время",
+        duties: [
+          "Подготовка полного пакета процессуальных документов: исковые заявления, отзывы, ходатайства, правовые позиции",
+          "Разработка правовой позиции и стратегии ведения дел",
+          "Сопровождение судебных процессов в арбитражных судах и судах общей юрисдикции",
+          "Представление интересов доверителя в судебных заседаниях",
+          "Взаимодействие с клиентами, сбор и анализ доказательственной базы"
+        ],
+        achievements: [
+          "Самостоятельно вёл судебное дело в арбитражном суде по защите предпринимателя в сфере интеллектуальных прав",
+          "Обеспечил снижение размера заявленной компенсации до минимального уровня",
+          "Подготовил и сопровождает дело об утрате права пользования жилым помещением",
+          "Разработал правовые позиции, повысившие эффективность защиты интересов клиентов"
+        ]
+      },
+      {
+        company: "ООО «РСК»",
+        role: "Юрисконсульт",
+        period: "Июнь 2024 — Декабрь 2024",
+        duties: [
+          "Правовая экспертиза договоров и внутренних документов компании",
+          "Подготовка юридических заключений и консультирование по вопросам законодательства",
+          "Участие в разработке и внедрении правовых процедур",
+          "Правовое сопровождение проектов и взаимодействие с государственными органами"
+        ],
+        achievements: [
+          "Повысил качество правовой экспертизы документов",
+          "Снизил правовые риски за счёт системного подхода к анализу и сопровождению"
+        ]
+      },
+      {
+        company: "Замоскворецкая межрайонная прокуратура",
+        role: "Помощник прокурора / практикант",
+        period: "Октябрь 2023 — Май 2025",
+        duties: [
+          "Осуществление общего и процессуального прокурорского надзора",
+          "Проведение проверок соблюдения законодательства, выявление нарушений прав граждан и организаций",
+          "Анализ материалов проверок и решений об отказе в возбуждении уголовных дел",
+          "Подготовка проектов актов прокурорского реагирования"
+        ],
+        achievements: [
+          "Развил навыки правового анализа и подготовки процессуальных документов",
+          "Участвовал в выявлении нарушений на стадии доследственных проверок",
+          "Систематизировал подход к анализу правоприменительной практики"
+        ]
+      }
+    ]
+  };
+
+  const STORAGE_KEY = 'asryan_site_data_v1';
+  const PASS_KEY = 'asryan_admin_pass';
+  const SESSION_KEY = 'asryan_admin_session';
+
+  /* Загрузка данных */
+  function loadData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return JSON.parse(JSON.stringify(DEFAULT_DATA));
+  }
+  let DATA = loadData();
+
+  /* =========================================================
+     РЕНДЕР КОНТЕНТА ИЗ ДАННЫХ
+     ========================================================= */
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function setField(path, value) {
+    const el = document.querySelector(`[data-field="${path}"]`);
+    if (!el) return;
+    // полю имени разрешаем HTML (там <br>), остальное — текст
+    if (path === 'home.name') el.innerHTML = value;
+    else el.textContent = value;
+  }
+
+  function renderHomeAboutInfo() {
+    setField('home.greeting', DATA.home.greeting);
+    setField('home.name', DATA.home.name);
+    setField('home.position', DATA.home.position);
+    setField('home.description', DATA.home.description);
+    ['p1','p2','p3','p4'].forEach(k => setField('about.'+k, DATA.about[k]));
+    setField('info.fio', DATA.info.fio);
+    setField('info.position', DATA.info.position);
+    setField('info.phone', DATA.info.phone);
+    setField('info.email', DATA.info.email);
+    setField('info.salary', DATA.info.salary);
+    setField('info.english', DATA.info.english);
+
+    // ссылки в контактах
+    const pl = document.querySelector('[data-field="info.phone-link"]');
+    if (pl) { pl.textContent = DATA.info.phone; pl.setAttribute('href','tel:'+DATA.info.phone.replace(/[^+\d]/g,'')); }
+    const el = document.querySelector('[data-field="info.email-link"]');
+    if (el) { el.textContent = DATA.info.email; el.setAttribute('href','mailto:'+DATA.info.email); }
+  }
+
+  function renderJobs() {
+    const c = document.getElementById('jobsContainer');
+    c.innerHTML = DATA.jobs.map(j => `
+      <div class="job reveal">
+        <div class="job-header">
+          <div>
+            <h3>${escapeHtml(j.company)}</h3>
+            <div class="role-sub">${escapeHtml(j.role)}</div>
+          </div>
+          <div class="period">${escapeHtml(j.period)}</div>
+        </div>
+        <h4>Обязанности</h4>
+        <ul>${j.duties.map(d => `<li>${escapeHtml(d)}</li>`).join('')}</ul>
+        <h4>Достижения</h4>
+        <ul>${j.achievements.map(a => `<li>${escapeHtml(a)}</li>`).join('')}</ul>
+      </div>
+    `).join('');
+    observeReveals();
+  }
+
+  function renderAll() {
+    renderHomeAboutInfo();
+    renderJobs();
+    buildPrintResume();
+    observeReveals();
+    animateSkillBars();
+  }
+
+  /* =========================================================
+     ШАБЛОН ДЛЯ ПЕЧАТИ / PDF
+     ========================================================= */
+  function buildPrintResume() {
+    document.getElementById('prName').textContent = DATA.info.fio;
+    document.getElementById('prPosition').textContent = DATA.info.position;
+    document.getElementById('prContacts').innerHTML =
+      `${escapeHtml(DATA.info.phone)} &nbsp;•&nbsp; ${escapeHtml(DATA.info.email)} &nbsp;•&nbsp; ${escapeHtml(DATA.info.salary)}`;
+    document.getElementById('prSummary').textContent = DATA.home.description;
+
+    document.getElementById('prJobs').innerHTML = DATA.jobs.map(j => `
+      <div class="pr-job">
+        <div class="pr-job-head"><strong>${escapeHtml(j.company)}</strong><span>${escapeHtml(j.period)}</span></div>
+        <div class="pr-role">${escapeHtml(j.role)}</div>
+        <ul>${j.duties.map(d=>`<li>${escapeHtml(d)}</li>`).join('')}</ul>
+      </div>
+    `).join('');
+
+    document.getElementById('prEdu').innerHTML =
+      `<strong>МГЮА им. О.Е. Кутафина</strong><br>Специалитет — Юриспруденция (2022—2027)`;
+
+    document.getElementById('prSkills').innerHTML =
+      `Процессуальные документы • Правовые позиции • Судебные дела • Экспертиза договоров • ` +
+      `Прокурорский надзор • КонсультантПлюс • Гарант • Гражданское право • Арбитражный процесс • ` +
+      `Английский B1`;
+  }
+
+  /* =========================================================
+     НАВИГАЦИЯ
+     ========================================================= */
+  const buttons = document.querySelectorAll('.nav-btn');
+  const pages = document.querySelectorAll('.page');
+
+  function showPage(pageId) {
+    pages.forEach(p => p.classList.remove('active'));
+    buttons.forEach(b => b.classList.remove('active'));
+    const pg = document.getElementById(pageId);
+    if (pg) pg.classList.add('active');
+    const activeBtn = document.querySelector(`.nav-btn[data-page="${pageId}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.querySelector('.nav-links').classList.remove('open');
+    // повторно запускаем анимации на новой странице
+    setTimeout(() => { observeReveals(); animateSkillBars(); animateCounters(); }, 80);
+  }
+  buttons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    showToast('Спасибо за сообщение! Я свяжусь с вами в ближайшее время.');
+    e.target.reset();
+  }
+
+  /* =========================================================
+     АНИМАЦИИ (появление при скролле, счётчики, скиллы)
+     ========================================================= */
+  let revealObserver;
+  function observeReveals() {
+    if (!revealObserver) {
+      revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+    }
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+  }
+
+  let skillObserver;
+  function animateSkillBars() {
+    const bars = document.querySelectorAll('.skill-bar:not(.animated)');
+    if (!('IntersectionObserver' in window)) {
+      bars.forEach(b => b.classList.add('animated'));
+      return;
+    }
+    if (!skillObserver) {
+      skillObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animated');
+            skillObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+    }
+    bars.forEach(b => skillObserver.observe(b));
+  }
+
+  function animateCounters() {
+    document.querySelectorAll('[data-count]').forEach(el => {
+      if (el.dataset.done) return;
+      const target = parseFloat(el.dataset.count);
+      const dec = parseInt(el.dataset.decimal || '0');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            el.dataset.done = '1';
+            const dur = 1200;
+            const t0 = performance.now();
+            function step(now){
+              const p = Math.min((now - t0)/dur, 1);
+              const eased = 1 - Math.pow(1 - p, 3);
+              el.textContent = (target * eased).toFixed(dec);
+              if (p < 1) requestAnimationFrame(step);
+              else el.textContent = target.toFixed(dec);
+            }
+            requestAnimationFrame(step);
+            io.unobserve(el);
+          }
+        });
+      }, { threshold: 0.5 });
+      io.observe(el);
+    });
+  }
+
+  /* Тень навбара при скролле */
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  /* =========================================================
+     TOAST
+     ========================================================= */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  /* =========================================================
+     СКАЧИВАНИЕ PDF (печать в PDF, работает офлайн)
+     ========================================================= */
+  function downloadPDF() {
+    buildPrintResume();
+    showToast('Откроется окно печати — выберите «Сохранить как PDF»');
+    setTimeout(() => window.print(), 500);
+  }
+
+  /* =========================================================
+     АДМИН-ПАНЕЛЬ
+     ========================================================= */
+  function getStoredPass() { return localStorage.getItem(PASS_KEY) || 'admin123'; }
+  function isLoggedIn() { return sessionStorage.getItem(SESSION_KEY) === '1'; }
+
+  function openAdmin() {
+    document.getElementById('adminOverlay').classList.add('open');
+    if (isLoggedIn()) showEditView(); else showLoginView();
+  }
+  function closeAdmin() { document.getElementById('adminOverlay').classList.remove('open'); }
+
+  function showLoginView() {
+    document.getElementById('adminLoginView').style.display = 'block';
+    document.getElementById('adminEditView').style.display = 'none';
+    document.getElementById('adminPass').value = '';
+    setTimeout(() => document.getElementById('adminPass').focus(), 100);
+  }
+  function showEditView() {
+    document.getElementById('adminLoginView').style.display = 'none';
+    document.getElementById('adminEditView').style.display = 'block';
+    fillAdminForm();
+  }
+
+  function adminLogin() {
+    const val = document.getElementById('adminPass').value;
+    if (val === getStoredPass()) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      showEditView();
+      showToast('Вход выполнен');
+    } else {
+      showToast('Неверный пароль');
+    }
+  }
+  function adminLogout() {
+    sessionStorage.removeItem(SESSION_KEY);
+    showLoginView();
+    showToast('Вы вышли из админ-панели');
+  }
+
+  function fillAdminForm() {
+    document.querySelectorAll('[data-admin]').forEach(inp => {
+      const path = inp.dataset.admin.split('.');
+      let v = DATA;
+      for (const k of path) v = v[k];
+      inp.value = v;
+    });
+    // опыт работы
+    const jc = document.getElementById('adminJobs');
+    jc.innerHTML = DATA.jobs.map((j, i) => `
+      <div style="border:1px solid #e2dccf; padding:14px; margin-bottom:12px;">
+        <div class="admin-field"><label>Компания</label><input data-job="${i}.company" type="text" value="${escapeHtml(j.company)}"></div>
+        <div class="admin-field"><label>Должность</label><input data-job="${i}.role" type="text" value="${escapeHtml(j.role)}"></div>
+        <div class="admin-field"><label>Период</label><input data-job="${i}.period" type="text" value="${escapeHtml(j.period)}"></div>
+      </div>
+    `).join('');
+    document.getElementById('newPass').value = '';
+  }
+
+  function adminSave() {
+    // простые поля
+    document.querySelectorAll('[data-admin]').forEach(inp => {
+      const path = inp.dataset.admin.split('.');
+      let obj = DATA;
+      for (let k = 0; k < path.length - 1; k++) obj = obj[path[k]];
+      obj[path[path.length-1]] = inp.value;
+    });
+    // поля опыта
+    document.querySelectorAll('[data-job]').forEach(inp => {
+      const [i, key] = inp.dataset.job.split('.');
+      DATA.jobs[i][key] = inp.value;
+    });
+    // новый пароль
+    const np = document.getElementById('newPass').value.trim();
+    if (np) localStorage.setItem(PASS_KEY, np);
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA));
+    renderAll();
+    const s = document.getElementById('adminSaved');
+    s.classList.add('show');
+    setTimeout(() => s.classList.remove('show'), 2000);
+    showToast('Изменения сохранены');
+  }
+
+  function adminReset() {
+    if (!confirm('Сбросить все данные к исходным?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(PASS_KEY);
+    DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    renderAll();
+    fillAdminForm();
+    showToast('Данные сброшены');
+  }
+
+  /* Горячая клавиша админки: Ctrl+Shift+A */
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a' || e.key === 'Ф' || e.key === 'ф')) {
+      e.preventDefault();
+      openAdmin();
+    }
+    if (e.key === 'Escape') closeAdmin();
+  });
+  /* Клик по фону закрывает */
+  document.getElementById('adminOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'adminOverlay') closeAdmin();
+  });
+
+  /* =========================================================
+     ИНИЦИАЛИЗАЦИЯ
+     ========================================================= */
+  renderAll();
+  animateCounters();
+  observeReveals();
+  animateSkillBars();
+</script>
+
+</body>
+</html>
